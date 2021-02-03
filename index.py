@@ -13,7 +13,6 @@ import random
 from urllib.request import HTTPError
 from discord.ext import commands, tasks
 from itertools import cycle
-from bs4 import BeautifulSoup
 
 intents = discord.Intents.default()
 intents.members = True
@@ -23,10 +22,6 @@ bot.remove_command('help')
 #bicon -> bot icon, ticon -> team icon
 bicon = "https://postfiles.pstatic.net/MjAyMDEyMTlfNjUg/MDAxNjA4MzgwMjMwMTk1.vpGaTsHFbFfhvPpt9Hm1NqSDr0DZre02K-usz16qWjgg.bJpkQYomYDzFn9h4kOVuzcs5zw6pPS0JvUTXxtMRH4wg.PNG.kingstonlee/179_20201219070213.png?type=w966"
 blankicon = 'https://postfiles.pstatic.net/MjAyMDEyMzBfMjMz/MDAxNjA5MjU3MjI0MjY1.Ywa3JgqklresO2beNqiCyASxDU_CxOIf1DcfL7g0l90g.oJzcdR5bxgQ36qQ8E_NYbPtFOXw7kMYXXPyvRVQL61Ig.PNG.kingstonlee/9HZBYcvaOEnh4tOp5EqgcCr_vKH7cjFJwkvw-45Dfjs.png?type=w966'
-
-Name = "qxt"
-hdr = {'Accept-Language': 'ko_KR,en;q=0.8', 'User-Agent': (
-    'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Mobile Safari/537.36')}
 
 async def readjson(filename):
     try:
