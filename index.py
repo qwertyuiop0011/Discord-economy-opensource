@@ -354,9 +354,6 @@ async def 핑(ctx):
         embed.set_footer(text=ctx.author,icon_url=ctx.author.avatar_url)
     return await ctx.send(f"{ctx.author.mention}\n", embed=embed)
 
-# @bot.command()
-# async def helloworld(ctx):
-#     await ctx.send('코딩의 첫걸음을 알리는 메세지이죠!\n<:confetti_ball:781905491612663869>이스터에그 발견<:confetti_ball:781905491612663869>')
 
 @bot.command()
 async def 내정보(ctx):
