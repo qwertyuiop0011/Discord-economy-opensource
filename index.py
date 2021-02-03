@@ -330,78 +330,6 @@ async def 슬로우(ctx, seconds: int):
     else:
         return await ctx.send(f'{ctx.author.mention}님은 관리자권한이 없습니다.')
 
-
-#크롤링
-@bot.command()
-async def 롤(ctx, *, message=None):
-    if message is None: 
-        await ctx.send(f"{ctx.author.mention}, `아크야 롤 [소환사명]` 을 입력해주세요!")
-        return
-    else:
-        if message==None:
-            return await ctx.send(f'{ctx.author.mention}, 소환사명을 입력해주세요!\n명령어 사용법 - `아크야 롤 [소환사명]`')
-        response = requests.get('https://www.op.gg/summoner/userName='+message)
-        soup = BeautifulSoup(response.text, 'html.parser')
-
-        try:
-            # name = str(soup.find('div', {'class': 'SummonerName'}))
-            # name = re.sub(r'<[^>]+>', '', name, 0).strip()
-            opgg = message.split(' ')
-            uaename = ('%20').join(opgg)
-            em = discord.Embed(title=f'{message}님의 롤전적 보러 가기 🔗', url='https://www.op.gg/summoner/userName='+uaename, description=f'[롤 몇 시간 했는지 궁금해? 🔗](http://ifi.gg/summoner/{uaename})', colour=ctx.author.color)
-
-            try:
-                em.set_footer(icon_url=ctx.author.avatar_url, text=f'{ctx.author} - {ctx.author.guild.name}ㅣOP.GG')
-            except AttributeError:
-                em.set_footer(icon_url=ctx.author.avatar_url, text=f'{ctx.author} - DMㅣOP.GG')
-
-            tier = str(soup.find('div', {'class': 'TierRank'}))
-            tier = re.sub(r'<[^>]+>', '', tier, 0).strip()
-            if tier == 'Unranked':
-                em.add_field(name='솔로랭크', value=tier, inline=False)
-            else:
-                lp = str(soup.find('span', {'class': 'LeaguePoints'}))
-                lp = re.sub(r'<[^>]+>', '', lp, 0).strip()
-                win = str(soup.find('span', {'class': 'wins'}))
-                win = re.sub(r'<[^>]+>', '', win, 0).strip()
-                lose = str(soup.find('span', {'class': 'losses'}))
-                lose = re.sub(r'<[^>]+>', '', lose, 0).strip()
-                ratio = str(soup.find('span', {'class': 'winratio'}))
-                ratio = re.sub(r'<[^>]+>', '', ratio, 0).strip()
-                em.add_field(name='솔로랭크', value=f'{tier}ㅣ{lp}ㅣ{win} {lose}ㅣ{ratio}', inline=False)
-
-            tier2 = str(soup.find('div', {'class': 'sub-tier__rank-tier'}))
-            tier2 = re.sub(r'<[^>]+>', '', tier2, 0).strip()
-            if tier2 == 'Unranked':
-                em.add_field(name='자유 5:5 랭크', value='Unranked', inline=False)
-            else:
-                lp2 = str(soup.find('div', {'class': 'sub-tier__league-point'}))
-                lp2 = re.sub(r'<[^>]+>', '', lp2, 0).strip()
-                winlose = str(soup.find('span', {'class': 'sub-tier__gray-text'}))
-                winlose = re.sub(r'<[^>]+>', '', winlose, 0).strip()
-                lp3 = lp2.split("/ ")[0]
-                winlose2 = lp2.split("/ ")[1]
-                ratio2 = str(soup.find('div', {'class': 'sub-tier__gray-text'}))
-                ratio2 = re.sub(r'<[^>]+>', '', ratio2, 0).strip()
-                em.add_field(name='자유 5:5 랭크', value=f'{tier2}ㅣ{lp3}ㅣ{winlose2}ㅣ{ratio2}', inline=False)
-
-            try:
-                img = str(soup.find('div', {'class': 'Medal tip'}).img['src'])
-                em.set_thumbnail(url='https:'+img)
-            except AttributeError:
-                img2 = str(soup.find('div', {'class': 'sub-tier'}).img['src'])
-                em.set_thumbnail(url='https:' +img2)
-
-            await ctx.send(embed=em)
-        except HTTPError as e:
-            await ctx.send(f'{ctx.author.mention} 명령어 형식이 올바르지 않거나 없는 소환사명이네요!\n명령어 사용법 - `아크야 롤 [소환사명]`\n에러코드 - {e}')
-
-        except UnicodeEncodeError as e:
-            await ctx.send(f'{ctx.author.mention} 명령어 형식이 올바르지 않거나 없는 소환사명이네요!\n명령어 사용법 - `아크야 롤 [소환사명]`\n에러코드 - {e}')  
-
-        except IndexError as e:
-            await ctx.send(f'{ctx.author.mention}, 찾을 수 없는 소환사명이네요!\n명령어 사용법 - `아크야 롤 [소환사명]`')
-
 #기본명령어
 @bot.command()
 async def 핑(ctx):
@@ -663,22 +591,5 @@ async def 슬롯(ctx, *, amount=None):
         result['balance'] -= int(amount)
         await writejson(str(ctx.guild.id), json)
         await ctx.send(f'{ctx.author.mention}\n1개도 맞추지 못했어요... 다음에 다시 도전하세요!')
-
-# @bot.command()
-# async def 블랙잭(ctx, *, amount=None):
-
-# @bot.command()
-# async def 룰렛(ctx, *, col=None):
-#     json = await readjson(str(ctx.guild.id))
-#     try:
-#         result = json[str(ctx.author.id)]
-#     except KeyError:
-#         return await ctx.send(f"{ctx.author.mention}\n**룰렛**게임을 하기 위해선 계좌가 필요해요! `아크야 계좌생성`을 입력하여 계좌를 개설하세요!")
-    
-#     cho = ['0(초록)', '1(빨강)', '2(검정)', '3(빨강)', '4(검정)', '5(빨강)', '6(검정)', '7(빨강)', '8(검정)', '9(빨강)', '10(검정)', '11(빨강)', '12(검정)', '13(빨강)', '14(검정)', '15(빨강)', '16(검정)', '17(빨강)', '18(검정)', '19(빨강)', '20(검정)', '21(빨강)', '22(검정)', '23(빨강)', '24(검정)', '25(빨강)', '26(검정)', '27(빨강)', '28(검정)', '29(빨강)', '30(검정)', '31(빨강)', '32(검정)', '33(빨강)', '34(검정)', '35(빨강)', '36(검정)', '00(초록)']
-#     ran = random.choice(cho)
-#     if col=None:
-#         return await ctx.send(f"{ctx.author.mention} `아크야 룰렛 [빨강 or 검정 or 초록]`을 입력해주세요!")
-    # elif
 
 bot.run(config.bot['token'])
