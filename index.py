@@ -17,11 +17,11 @@ from itertools import cycle
 intents = discord.Intents.default()
 intents.members = True
 bot = discord.Client()
-bot = commands.Bot(command_prefix=config.bot["prefix"], help_command=None, description='아크봇', intents=intents)
+bot = commands.Bot(command_prefix=config.bot["prefix"], help_command=None, description='', intents=intents) #description: bot name
 bot.remove_command('help')
 #bicon -> bot icon, ticon -> team icon
-bicon = "https://postfiles.pstatic.net/MjAyMDEyMTlfNjUg/MDAxNjA4MzgwMjMwMTk1.vpGaTsHFbFfhvPpt9Hm1NqSDr0DZre02K-usz16qWjgg.bJpkQYomYDzFn9h4kOVuzcs5zw6pPS0JvUTXxtMRH4wg.PNG.kingstonlee/179_20201219070213.png?type=w966"
-blankicon = 'https://postfiles.pstatic.net/MjAyMDEyMzBfMjMz/MDAxNjA5MjU3MjI0MjY1.Ywa3JgqklresO2beNqiCyASxDU_CxOIf1DcfL7g0l90g.oJzcdR5bxgQ36qQ8E_NYbPtFOXw7kMYXXPyvRVQL61Ig.PNG.kingstonlee/9HZBYcvaOEnh4tOp5EqgcCr_vKH7cjFJwkvw-45Dfjs.png?type=w966'
+bicon = ''
+blankicon = ''
 
 async def readjson(filename):
     try:
@@ -41,7 +41,7 @@ def owner(ctx):
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(status=discord.Status.online,activity=discord.Activity(type=discord.ActivityType.playing, name=f"아크야 도움 | {len(bot.guilds)}서버"))
+    await bot.change_presence(status=discord.Status.online,activity=discord.Activity(type=discord.ActivityType.playing, name='')) #name: status / server number: {len(bot.guilds)}
     print("준비완료")
 
 @bot.event
